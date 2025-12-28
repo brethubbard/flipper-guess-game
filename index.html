@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#6366f1">
+    <title>Phone Flip Guess Game</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Menu Screen -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-container">
+            <h1 class="game-title">Phone Flip<br>Guess Game</h1>
+            <p class="game-subtitle">The Ultimate Charades Experience</p>
+            <button class="btn btn-primary btn-large" id="play-btn">Play Game</button>
+            <button class="btn btn-secondary" id="how-to-play-btn">How to Play</button>
+            <button class="btn btn-icon" id="settings-btn">⚙️</button>
+        </div>
+    </div>
+
+    <!-- How to Play Screen -->
+    <div id="how-to-play" class="screen">
+        <div class="info-container">
+            <h2>How to Play</h2>
+            <div class="instructions">
+                <div class="instruction-item">
+                    <div class="instruction-icon">📱</div>
+                    <p><strong>Step 1:</strong> Choose a category and get ready</p>
+                </div>
+                <div class="instruction-item">
+                    <div class="instruction-icon">🤔</div>
+                    <p><strong>Step 2:</strong> Hold the phone to your forehead</p>
+                </div>
+                <div class="instruction-item">
+                    <div class="instruction-icon">💬</div>
+                    <p><strong>Step 3:</strong> Your friends give you clues</p>
+                </div>
+                <div class="instruction-item">
+                    <div class="instruction-icon">⬇️</div>
+                    <p><strong>Step 4:</strong> Flip phone DOWN when you guess correctly</p>
+                </div>
+                <div class="instruction-item">
+                    <div class="instruction-icon">⬆️</div>
+                    <p><strong>Step 5:</strong> Flip phone UP to pass</p>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="back-to-menu-btn">Got It!</button>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings" class="screen">
+        <div class="info-container">
+            <h2>Settings</h2>
+            <div class="settings-list">
+                <div class="setting-item">
+                    <label for="sound-toggle">Sound Effects</label>
+                    <input type="checkbox" id="sound-toggle" class="toggle" checked>
+                </div>
+                <div class="setting-item">
+                    <label for="vibration-toggle">Vibration</label>
+                    <input type="checkbox" id="vibration-toggle" class="toggle" checked>
+                </div>
+                <div class="setting-item">
+                    <label for="timer-duration">Timer Duration</label>
+                    <select id="timer-duration" class="select">
+                        <option value="30">30 seconds</option>
+                        <option value="60" selected>60 seconds</option>
+                        <option value="90">90 seconds</option>
+                        <option value="120">120 seconds</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="back-from-settings-btn">Back</button>
+        </div>
+    </div>
+
+    <!-- Category Selection Screen -->
+    <div id="category-selection" class="screen">
+        <div class="category-container">
+            <h2>Choose a Category</h2>
+            <div class="category-grid" id="category-grid">
+                <!-- Categories will be populated by JavaScript -->
+            </div>
+            <button class="btn btn-secondary" id="back-from-category-btn">Back</button>
+        </div>
+    </div>
+
+    <!-- Ready Countdown Screen -->
+    <div id="countdown" class="screen">
+        <div class="countdown-container">
+            <h2 id="countdown-text">Ready?</h2>
+            <p class="countdown-instructions">Hold phone to forehead<br>Flip DOWN for correct • Flip UP to pass</p>
+        </div>
+    </div>
+
+    <!-- Gameplay Screen -->
+    <div id="gameplay" class="screen">
+        <div class="gameplay-container">
+            <div class="timer-bar-container">
+                <div class="timer-bar" id="timer-bar"></div>
+            </div>
+            <div class="score-display">
+                <span id="score-counter">0</span> Correct
+            </div>
+            <div class="word-display" id="word-display">
+                Loading...
+            </div>
+            <div class="pass-counter">
+                <span id="pass-counter">0</span> Passed
+            </div>
+            <button class="btn btn-pause" id="pause-btn">⏸</button>
+        </div>
+    </div>
+
+    <!-- Pause Screen -->
+    <div id="pause" class="screen">
+        <div class="pause-container">
+            <h2>Paused</h2>
+            <button class="btn btn-primary" id="resume-btn">Resume</button>
+            <button class="btn btn-secondary" id="quit-btn">Quit Game</button>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results" class="screen">
+        <div class="results-container">
+            <h2>Time's Up!</h2>
+            <div class="final-score">
+                <div class="score-number" id="final-score">0</div>
+                <div class="score-label">Correct Answers!</div>
+            </div>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="results-passed">0</span>
+                    <span class="stat-label">Passed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="results-total">0</span>
+                    <span class="stat-label">Total Words</span>
+                </div>
+            </div>
+            <div class="results-buttons">
+                <button class="btn btn-primary" id="play-again-btn">Play Again</button>
+                <button class="btn btn-secondary" id="change-category-btn">Change Category</button>
+                <button class="btn btn-secondary" id="back-to-menu-results-btn">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
