@@ -148,15 +148,20 @@ class PhoneFlipGame {
         const beta = event.beta; // Front-to-back tilt (-180 to 180)
         const gamma = event.gamma; // Left-to-right tilt (-90 to 90)
 
+        // Debug logging (will be visible in browser console)
+        if (Math.random() < 0.1) { // Log 10% of the time to avoid spam
+            console.log('Beta:', beta, 'Gamma:', gamma);
+        }
+
         // Flip down (face down) - Correct answer
+        // Phone tilted forward significantly (face down position)
         if (beta > this.flipThreshold && Math.abs(gamma) < 90) {
             this.handleCorrect();
         }
         // Flip up (face up) - Pass
-        else if (beta < -this.flipThreshold || (beta < 0 && beta > -180)) {
-            if (beta < -this.flipThreshold + 20) {
-                this.handlePass();
-            }
+        // Phone tilted backward significantly (face up position)
+        else if (beta < -this.flipThreshold + 20 && Math.abs(gamma) < 90) {
+            this.handlePass();
         }
     }
 
@@ -269,6 +274,15 @@ class PhoneFlipGame {
 
         // Show first word
         this.showScreen('gameplay');
+
+        // Initialize timer display
+        document.getElementById('timer-seconds').textContent = this.settings.timerDuration;
+        document.getElementById('timer-display').classList.remove('warning');
+        document.getElementById('timer-bar').classList.remove('warning');
+
+        // Initialize score display
+        this.updateScore();
+
         this.displayWord();
         this.startTimer();
 
@@ -293,6 +307,8 @@ class PhoneFlipGame {
 
     startTimer() {
         const timerBar = document.getElementById('timer-bar');
+        const timerDisplay = document.getElementById('timer-display');
+        const timerSeconds = document.getElementById('timer-seconds');
         const startTime = Date.now();
         const duration = this.settings.timerDuration * 1000;
 
@@ -306,10 +322,16 @@ class PhoneFlipGame {
             const percentage = (remaining / duration) * 100;
             timerBar.style.width = percentage + '%';
 
+            // Update timer display
+            timerSeconds.textContent = this.timeRemaining;
+
             // Warning in last 10 seconds
-            if (this.timeRemaining <= 10 && !timerBar.classList.contains('warning')) {
-                timerBar.classList.add('warning');
-                this.playSound('warning');
+            if (this.timeRemaining <= 10) {
+                if (!timerBar.classList.contains('warning')) {
+                    timerBar.classList.add('warning');
+                    timerDisplay.classList.add('warning');
+                    this.playSound('warning');
+                }
             }
 
             if (remaining <= 0) {
@@ -363,6 +385,7 @@ class PhoneFlipGame {
     }
 
     showFeedback(type) {
+        // Flash background
         const flash = document.createElement('div');
         flash.className = `feedback-flash ${type}`;
         document.body.appendChild(flash);
@@ -370,6 +393,15 @@ class PhoneFlipGame {
         setTimeout(() => {
             flash.remove();
         }, 300);
+
+        // Show action indicator
+        const indicator = document.getElementById('action-indicator');
+        indicator.textContent = type === 'correct' ? '✓ Correct!' : '→ Pass';
+        indicator.className = `action-indicator ${type} show`;
+
+        setTimeout(() => {
+            indicator.classList.remove('show');
+        }, 600);
     }
 
     pauseGame() {
