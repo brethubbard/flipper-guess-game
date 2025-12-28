@@ -1,11 +1,11 @@
 const CACHE_NAME = 'phone-flip-game-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/app.js',
-  '/words.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './styles.css',
+  './app.js',
+  './words.js',
+  './manifest.json'
 ];
 
 // Install event - cache all static assets

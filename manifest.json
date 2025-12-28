@@ -2,7 +2,7 @@
   "name": "Phone Flip Guess Game",
   "short_name": "Flip Guess",
   "description": "A charades-style party game where players hold their phone to their forehead",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
