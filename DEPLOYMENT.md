@@ -2,15 +2,43 @@
 
 ## Phone Flip Guess Game Deployment Instructions
 
-### Quick Deploy Options
+## 🌐 Current Deployment
 
-#### 1. GitHub Pages (Recommended for Quick Setup)
+This game is currently deployed on GitHub Pages:
+
+**Live URL:** [https://brethubbard.github.io/flipper-guess-game/](https://brethubbard.github.io/flipper-guess-game/)
+
+### Updating the Deployment
+
+To update the live game:
+
+1. Make your changes and commit them
+2. Push to the branch configured in GitHub Pages settings
+3. GitHub will automatically rebuild and deploy (takes 2-3 minutes)
+4. Clear browser cache or do a hard refresh to see changes
+
+### GitHub Pages Configuration
+
+Current settings (already configured):
+- **Repository:** brethubbard/flipper-guess-game
+- **Settings:** https://github.com/brethubbard/flipper-guess-game/settings/pages
+- **Branch:** Configured for deployment
+- **Path:** Root directory
+- **URL:** https://brethubbard.github.io/flipper-guess-game/
+
+---
+
+## Alternative Deployment Options
+
+#### 1. GitHub Pages (Different Repository)
+
+To deploy to a different GitHub repository:
 
 1. Push your code to a GitHub repository
 2. Go to repository Settings → Pages
 3. Select your branch (usually `main`) and `/root` folder
 4. Click Save
-5. Your game will be available at `https://yourusername.github.io/flipper-guess-game/`
+5. Your game will be available at `https://yourusername.github.io/repository-name/`
 
 #### 2. Netlify (Easiest with Custom Domain)
 

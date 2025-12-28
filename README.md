@@ -2,6 +2,8 @@
 
 A fun, charades-style party game for mobile devices where players hold their phone to their forehead while friends give clues. Use the accelerometer to flip the phone down for correct answers or up to pass!
 
+**🎮 [Play Now](https://brethubbard.github.io/flipper-guess-game/)** | Deployed on GitHub Pages
+
 ## 🎮 Game Overview
 
 This is a mobile Progressive Web App (PWA) that brings the classic "heads up" style gameplay to any smartphone. Perfect for parties, family gatherings, or just having fun with friends!
@@ -50,17 +52,19 @@ This is a mobile Progressive Web App (PWA) that brings the classic "heads up" st
 
 ## 🚀 Quick Start
 
-### Option 1: Play Online (Easiest)
+### Play Online
 
-1. Visit the deployed game URL on your mobile device
-2. Tap "Add to Home Screen" when prompted (optional)
+**🎮 Live Game:** [https://brethubbard.github.io/flipper-guess-game/](https://brethubbard.github.io/flipper-guess-game/)
+
+1. Visit the game URL on your mobile device
+2. Tap "Add to Home Screen" when prompted (optional, enables PWA mode)
 3. Start playing!
 
-### Option 2: Local Development
+### Local Development (Optional)
 
 1. Clone this repository
 ```bash
-git clone https://github.com/yourusername/flipper-guess-game.git
+git clone https://github.com/brethubbard/flipper-guess-game.git
 cd flipper-guess-game
 ```
 
