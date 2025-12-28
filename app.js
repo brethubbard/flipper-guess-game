@@ -20,9 +20,7 @@ class PhoneFlipGame {
         };
 
         // Accelerometer
-        this.lastOrientation = null;
-        this.flipCooldown = false;
-        this.flipThreshold = 140;
+        this.inNeutralZone = true; // Track if phone is in neutral position (ready for flip)
 
         this.init();
     }
@@ -143,24 +141,46 @@ class PhoneFlipGame {
     }
 
     handleOrientation(event) {
-        if (!this.isGameActive || this.isPaused || this.flipCooldown) return;
+        if (!this.isGameActive || this.isPaused) return;
 
         const beta = event.beta; // Front-to-back tilt (-180 to 180)
         const gamma = event.gamma; // Left-to-right tilt (-90 to 90)
 
+        // Ignore if phone is tilted too much left/right
+        if (Math.abs(gamma) > 70) return;
+
         // Debug logging (will be visible in browser console)
-        if (Math.random() < 0.1) { // Log 10% of the time to avoid spam
-            console.log('Beta:', beta, 'Gamma:', gamma);
+        if (Math.random() < 0.05) { // Log 5% of the time to avoid spam
+            console.log('Beta:', beta.toFixed(1), 'Neutral:', this.inNeutralZone);
         }
 
+        // Define neutral zone - phone held to forehead (roughly upright)
+        const neutralMin = 30;
+        const neutralMax = 130;
+        const isInNeutral = (beta >= neutralMin && beta <= neutralMax);
+
+        // If currently in neutral zone, mark it
+        if (isInNeutral) {
+            if (!this.inNeutralZone) {
+                // Just returned to neutral - ready for next flip
+                this.inNeutralZone = true;
+            }
+            return; // Don't trigger anything while in neutral
+        }
+
+        // Only detect flips if we were in neutral zone (prevents repeated triggers)
+        if (!this.inNeutralZone) return;
+
         // Flip down (face down) - Correct answer
-        // Phone tilted forward significantly (face down position)
-        if (beta > this.flipThreshold && Math.abs(gamma) < 90) {
+        // Phone tilted forward significantly (beta > 130)
+        if (beta > neutralMax) {
+            this.inNeutralZone = false; // Mark that we've left neutral
             this.handleCorrect();
         }
         // Flip up (face up) - Pass
-        // Phone tilted backward significantly (face up position)
-        else if (beta < -this.flipThreshold + 20 && Math.abs(gamma) < 90) {
+        // Phone tilted backward significantly (beta < 30)
+        else if (beta < neutralMin) {
+            this.inNeutralZone = false; // Mark that we've left neutral
             this.handlePass();
         }
     }
@@ -272,6 +292,9 @@ class PhoneFlipGame {
         this.isPaused = false;
         this.isGameActive = true;
 
+        // Reset accelerometer state
+        this.inNeutralZone = true;
+
         // Show first word
         this.showScreen('gameplay');
 
@@ -341,8 +364,6 @@ class PhoneFlipGame {
     }
 
     handleCorrect() {
-        if (this.flipCooldown) return;
-
         this.score++;
         this.totalWords++;
         this.currentWordIndex++;
@@ -352,13 +373,9 @@ class PhoneFlipGame {
         this.showFeedback('correct');
         this.vibrate(200);
         this.playSound('correct');
-
-        this.setFlipCooldown();
     }
 
     handlePass() {
-        if (this.flipCooldown) return;
-
         this.passCount++;
         this.totalWords++;
         this.currentWordIndex++;
@@ -368,15 +385,6 @@ class PhoneFlipGame {
         this.showFeedback('pass');
         this.vibrate(100);
         this.playSound('pass');
-
-        this.setFlipCooldown();
-    }
-
-    setFlipCooldown() {
-        this.flipCooldown = true;
-        setTimeout(() => {
-            this.flipCooldown = false;
-        }, 800);
     }
 
     updateScore() {
