@@ -83,8 +83,14 @@ class PhoneFlipGame {
 
         // Results
         document.getElementById('play-again-btn').addEventListener('click', () => this.playAgain());
-        document.getElementById('change-category-btn').addEventListener('click', () => this.showScreen('category-selection'));
-        document.getElementById('back-to-menu-results-btn').addEventListener('click', () => this.showScreen('main-menu'));
+        document.getElementById('change-category-btn').addEventListener('click', () => {
+            this.exitFullscreen();
+            this.showScreen('category-selection');
+        });
+        document.getElementById('back-to-menu-results-btn').addEventListener('click', () => {
+            this.exitFullscreen();
+            this.showScreen('main-menu');
+        });
 
         // Keep screen awake during gameplay
         this.setupWakeLock();
@@ -246,7 +252,46 @@ class PhoneFlipGame {
             if (!granted) return;
         }
 
+        // Request fullscreen
+        await this.requestFullscreen();
+
         this.startCountdown();
+    }
+
+    async requestFullscreen() {
+        try {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                await elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { // Safari
+                await elem.webkitRequestFullscreen();
+            } else if (elem.mozRequestFullScreen) { // Firefox
+                await elem.mozRequestFullScreen();
+            } else if (elem.msRequestFullscreen) { // IE/Edge
+                await elem.msRequestFullscreen();
+            }
+            console.log('Entered fullscreen mode');
+        } catch (err) {
+            console.log('Fullscreen request failed:', err);
+            // Don't block the game if fullscreen fails
+        }
+    }
+
+    exitFullscreen() {
+        try {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            console.log('Exited fullscreen mode');
+        } catch (err) {
+            console.log('Exit fullscreen failed:', err);
+        }
     }
 
     startCountdown() {
@@ -444,6 +489,8 @@ class PhoneFlipGame {
         if (!quit) {
             this.showResults();
         } else {
+            // Exit fullscreen when quitting
+            this.exitFullscreen();
             this.showScreen('main-menu');
         }
     }
@@ -457,7 +504,9 @@ class PhoneFlipGame {
         this.playSound('finish');
     }
 
-    playAgain() {
+    async playAgain() {
+        // Request fullscreen again in case it was exited
+        await this.requestFullscreen();
         this.startCountdown();
     }
 
